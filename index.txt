@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LY HENG | foodpanda Portfolio ID</title>
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- QRCode.js Library for dynamic QR generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    /* ==========================================================================
+       1. VARIABLES & RESETS (Mature Deep Magenta/Pink Palette)
+       ========================================================================== */
+    :root {
+      --bg-color: #f7e8ef;
+      --primary-color: #d70f64; /* Mature foodpanda Pink/Magenta */
+      --primary-hover: #b0074f;
+      --accent-color: #93003e;  /* Deep Burgundy-Pink Accent */
+      --text-dark: #1f1d20;
+      --text-muted: #665b63;
+      
+      /* Claymorphism Shadows & Soft Clay Tint */
+      --clay-radius: 35px;
+      --clay-card-bg: rgba(249, 233, 239, 0.90);
+      
+      --clay-card-shadow: 
+        16px 16px 32px #e0cad5,
+        -16px -16px 32px #ffffff,
+        inset 4px 4px 8px rgba(255, 255, 255, 0.85),
+        inset -4px -4px 8px rgba(215, 15, 100, 0.06);
+      
+      --clay-element-shadow: 
+        6px 6px 14px #e0cad5,
+        -6px -6px 14px #ffffff,
+        inset 2px 2px 4px rgba(255, 255, 255, 0.9),
+        inset -2px -2px 4px rgba(0, 0, 0, 0.05);
+
+      --clay-pressed-shadow: 
+        inset 5px 5px 10px #e0cad5,
+        inset -5px -5px 10px #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--bg-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      padding: 80px 20px 30px 20px;
+      position: relative;
+    }
+
+    /* Live Dynamic Canvas Background */
+    #liveBgCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Outer Wrapper Dual Layout Container */
+    .dual-card-container {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      gap: 30px;
+      align-items: stretch;
+      max-width: 1120px;
+      width: 100%;
+    }
+
+    /* Outer Card Wrapper to anchor Pau-Pau correctly behind the card layer */
+    .card-outer-anchor {
+      flex: 1.5;
+      position: relative;
+      display: flex;
+    }
+
+    /* Pau-Pau Mascot Layered Behind the Main Card (z-index: 1) */
+    .paupau-mascot-wrapper {
+      position: absolute;
+      top: -125px; /* Adjusts how much of Pau-Pau peeks out */
+      right: 45px;
+      width: 140px;
+      height: 160px;
+      z-index: 1; /* Sits BEHIND the card wrapper (z-index: 2) */
+      pointer-events: none;
+    }
+
+    .paupau-mascot-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0px -5px 10px rgba(215, 15, 100, 0.15));
+    }
+
+    /* ==========================================================================
+       2. MAIN ID CARD CONTAINER (FIXED PORTFOLIO CARD)
+       ========================================================================== */
+    .id-card-wrapper {
+      width: 100%;
+      z-index: 2; /* Layered in FRONT of Pau-Pau */
+      background: var(--clay-card-bg);
+      backdrop-filter: blur(12px);
+      border-radius: var(--clay-radius);
+      box-shadow: var(--clay-card-shadow);
+      padding: 35px 35px;
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* ID Lanyard Clip Hole */
+    .card-slot {
+      width: 12px;
+      height: 50px;
+      background: #d8c2ce;
+      position: absolute;
+      left: -6px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 20px;
+      box-shadow: var(--clay-pressed-shadow);
+    }
+
+    /* Header Section */
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .brand-logo {
+      font-weight: 800;
+      font-size: 0.95rem;
+      letter-spacing: 1.5px;
+      color: var(--primary-color);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Header Logo Image Styling */
+    .header-logo-img {
+      height: 28px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0px 2px 4px rgba(215, 15, 100, 0.15));
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: var(--clay-card-bg);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      box-shadow: var(--clay-element-shadow);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    /* Landscape Two-Column Inner Grid */
+    .landscape-grid {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: 25px;
+      align-items: start;
+    }
+
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* Profile Avatar Container */
+    .avatar-wrapper {
+      position: relative;
+      width: 125px;
+      height: 125px;
+      margin-bottom: 14px;
+      border-radius: 50%;
+      background: var(--clay-card-bg);
+      box-shadow: var(--clay-element-shadow);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 6px;
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2.6rem;
+      color: white;
+      box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.5);
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+
+    .profile-info {
+      text-align: center;
+      width: 100%;
+    }
+
+    .user-name {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    .user-position {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .market-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: var(--clay-card-bg);
+      padding: 5px 12px;
+      border-radius: 15px;
+      box-shadow: var(--clay-pressed-shadow);
+      margin-bottom: 6px;
+    }
+
+    .panda-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #ffffff;
+      background: var(--primary-color);
+      padding: 6px 12px;
+      border-radius: 15px;
+      box-shadow: var(--clay-element-shadow);
+      margin-bottom: 6px;
+    }
+
+    .middle-column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .stat-box {
+      background: var(--clay-card-bg);
+      padding: 10px 6px;
+      border-radius: 16px;
+      text-align: center;
+      box-shadow: var(--clay-element-shadow);
+    }
+
+    .stat-value {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .stat-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-top: 2px;
+      text-transform: uppercase;
+    }
+
+    /* Section Label Badge */
+    .section-title-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: var(--clay-card-bg);
+      border-radius: 14px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      box-shadow: var(--clay-pressed-shadow);
+      margin-bottom: 12px;
+      width: max-content;
+    }
+
+    .content-area {
+      background: var(--clay-card-bg);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: var(--clay-pressed-shadow);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .contact-details-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.75rem;
+      color: var(--text-dark);
+      word-break: break-word;
+    }
+
+    .contact-item i {
+      color: var(--primary-color);
+      width: 16px;
+      margin-top: 2px;
+      text-align: center;
+    }
+
+    .contact-item a {
+      color: var(--text-dark);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .contact-item a:hover {
+      color: var(--primary-color);
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--clay-card-bg);
+      box-shadow: var(--clay-element-shadow);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-dark);
+      text-decoration: none;
+      font-size: 1.05rem;
+      transition: all 0.2s ease;
+    }
+
+    .social-icon:hover {
+      color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+
+    .social-icon:active {
+      box-shadow: var(--clay-pressed-shadow);
+      transform: translateY(0);
+    }
+
+    /* ==========================================================================
+       3. SECOND CARD: STANDALONE 3D CLAYMOPHISM QR CODE HUBS
+       ========================================================================== */
+    .qr-card-wrapper {
+      flex: 0.9;
+      background: var(--clay-card-bg);
+      backdrop-filter: blur(12px);
+      border-radius: var(--clay-radius);
+      box-shadow: var(--clay-card-shadow);
+      padding: 30px 25px;
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .qr-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .qr-header-title {
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .qr-badge {
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      background: var(--clay-card-bg);
+      color: var(--primary-color);
+      border-radius: 12px;
+      box-shadow: var(--clay-element-shadow);
+    }
+
+    .qr-list-container {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .qr-tile {
+      background: var(--clay-card-bg);
+      border-radius: 22px;
+      padding: 16px;
+      box-shadow: var(--clay-element-shadow);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .qr-tile:hover {
+      transform: translateY(-3px);
+    }
+
+    .qr-frame {
+      background: #ffffff;
+      padding: 8px;
+      border-radius: 16px;
+      box-shadow: var(--clay-pressed-shadow);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 86px;
+      min-height: 86px;
+    }
+
+    .qr-frame img, .qr-frame canvas {
+      display: block;
+      border-radius: 6px;
+    }
+
+    .qr-info-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+    }
+
+    .qr-tile-title {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .qr-tile-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .qr-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 12px;
+      background: var(--clay-card-bg);
+      border-radius: 12px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      text-decoration: none;
+      box-shadow: var(--clay-element-shadow);
+      transition: all 0.2s ease;
+      width: max-content;
+    }
+
+    .qr-action-btn:hover {
+      color: var(--primary-hover);
+      box-shadow: var(--clay-pressed-shadow);
+    }
+
+    .qr-footer-note {
+      text-align: center;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    /* Responsive adjustment for small / tablet screens */
+    @media (max-width: 960px) {
+      .dual-card-container {
+        flex-direction: column;
+      }
+      .card-slot {
+        width: 50px;
+        height: 12px;
+        top: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .paupau-mascot-wrapper {
+        top: -100px;
+        right: 25px;
+        width: 110px;
+        height: 130px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .landscape-grid {
+        grid-template-columns: 1fr;
+      }
+      .qr-tile {
+        flex-direction: column;
+        text-align: center;
+      }
+      .qr-tile-title, .qr-action-btn {
+        margin: 0 auto 6px auto;
+      }
+    }
+
+    /* ==========================================================================
+       4. ANIMATIONS
+       ========================================================================== */
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(215, 15, 100, 0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(215, 15, 100, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(215, 15, 100, 0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Live Dynamic Canvas Background -->
+  <canvas id="liveBgCanvas"></canvas>
+
+  <!-- Dual Cards Container -->
+  <div class="dual-card-container">
+    
+    <!-- Outer Anchor for Positioning Pau-Pau behind Card 1 -->
+    <div class="card-outer-anchor">
+      
+      <!-- Pau-Pau Mascot Layered Behind Card 1 Top Right Edge -->
+      <div class="paupau-mascot-wrapper">
+        <img src="github/Pau PauV1.png" alt="Pau Pau Mascot" class="paupau-mascot-img">
+      </div>
+
+      <!-- CARD 1: FIXED LANDSCAPE PORTFOLIO CARD -->
+      <div class="id-card-wrapper" id="idCard">
+        <!-- Lanyard Hole Slot -->
+        <div class="card-slot"></div>
+
+        <!-- Header / Identification Brand -->
+        <div class="card-header">
+          <div class="brand-logo">
+            <img src="github/pandago_logo-RGB_pink.svg" alt="PandaGo Logo" class="header-logo-img">
+            <i class="fa-solid fa-square-p"></i> Digital Business Card
+          </div>
+          <div class="status-badge">
+            <span class="status-dot"></span> Active
+          </div>
+        </div>
+
+        <!-- Landscape Inner Grid -->
+        <div class="landscape-grid">
+          
+          <!-- Left Column: Identity & Fixed Profile Photo -->
+          <div class="left-column">
+            <div class="avatar-wrapper">
+              <div class="avatar-img" id="avatarDisplay">
+                <i class="fa-solid fa-user-tie"></i>
+              </div>
+            </div>
+
+            <div class="profile-info">
+              <h1 class="user-name">LY HENG</h1>
+              <div class="user-position">
+                Specialist, Sale & Account Management
+              </div>
+              <div class="market-tag">
+                <span style="font-weight: 800; color: var(--primary-color);">KH</span> Cambodia Market
+              </div>
+              <div class="panda-badge">
+                <i class="fa-solid fa-truck-fast"></i> pandasend Coordinator
+              </div>
+            </div>
+          </div>
+
+          <!-- Middle Column: Stats, Contact Info, & Actions -->
+          <div class="middle-column">
+            
+            <!-- Key Metrics / Stats -->
+            <div class="stats-grid">
+              <div class="stat-box">
+                <div class="stat-value">pandasend</div>
+                <div class="stat-label">Focus</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-value">KH</div>
+                <div class="stat-label">Region</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-value">B2B</div>
+                <div class="stat-label">Market</div>
+              </div>
+            </div>
+
+            <!-- Section Label -->
+            <div class="section-title-badge">
+              <i class="fa-solid fa-address-card"></i> Direct Contact Details
+            </div>
+
+            <!-- Content Container (Contact Info) -->
+            <div class="content-area">
+              <div class="contact-details-list">
+                <div class="contact-item">
+                  <i class="fa-solid fa-phone"></i>
+                  <a href="tel:+85515777313">(+855) 15 777 313</a>
+                </div>
+                <div class="contact-item">
+                  <i class="fa-solid fa-envelope"></i>
+                  <a href="mailto:heng.ly@foodpanda.com.kh">heng.ly@foodpanda.com.kh</a>
+                </div>
+                <div class="contact-item">
+                  <i class="fa-solid fa-globe"></i>
+                  <a href="https://pandasend-kh.com/" target="_blank">pandasend-kh.com</a>
+                </div>
+                <div class="contact-item">
+                  <i class="fa-solid fa-building"></i>
+                  <span>#32 F, GIA Tower, Sopheak Mongkul St, Phum 14, Sangkat Tonle Basak, Khan Chamkar Morn, Phnom Penh, Cambodia</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Social & Quick Direct Action Links -->
+            <div class="social-links">
+              <a href="https://t.me/LYHeng_PandaSend" target="_blank" class="social-icon" title="Telegram Contact">
+                <i class="fa-brands fa-telegram"></i>
+              </a>
+              <a href="mailto:heng.ly@foodpanda.com.kh" class="social-icon" title="Send Email">
+                <i class="fa-solid fa-envelope"></i>
+              </a>
+              <a href="tel:+85515777313" class="social-icon" title="Call Phone">
+                <i class="fa-solid fa-phone"></i>
+              </a>
+              <a href="https://pandasend-kh.com/" target="_blank" class="social-icon" title="Visit Website">
+                <i class="fa-solid fa-globe"></i>
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CARD 2: STANDALONE QR CODE HUB CARD -->
+    <div class="qr-card-wrapper">
+      
+      <div class="qr-header">
+        <div class="qr-header-title">
+          <i class="fa-solid fa-qrcode" style="color: var(--primary-color);"></i> SCAN CONNECT
+        </div>
+        <div class="qr-badge">pandasend - On Demand Rider</div>
+      </div>
+
+      <div class="qr-list-container">
+        
+        <!-- Telegram Contact Tile -->
+        <div class="qr-tile">
+          <div class="qr-frame" id="telegramQr"></div>
+          <div class="qr-info-content">
+            <div class="qr-tile-title">
+              <i class="fa-brands fa-telegram" style="color: #0088cc;"></i> Telegram
+            </div>
+            <div class="qr-tile-desc">Direct chat & PandaSend inquiries</div>
+            <a href="https://t.me/LYHeng_PandaSend" target="_blank" class="qr-action-btn">
+              Chat Now <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- PandaSend Leads Referral Tile -->
+        <div class="qr-tile">
+          <div class="qr-frame" id="referralQr"></div>
+          <div class="qr-info-content">
+            <div class="qr-tile-title">
+              <i class="fa-solid fa-file-signature" style="color: var(--primary-color);"></i> PandaSend Referral
+            </div>
+            <div class="qr-tile-desc">Submit Cambodia lead referral</div>
+            <a href="https://forms.gle/uGdBPgNdeZuHURYC6" target="_blank" class="qr-action-btn">
+              Submit Form <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="qr-footer-note">
+        <i class="fa-solid fa-camera"></i> Point your camera to scan
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Javascript Functionality -->
+  <script>
+    // PROFILE IMAGE CONFIGURATION
+    const PROFILE_IMAGE_URL = 'github/Heng LY.PNG';
+    if (PROFILE_IMAGE_URL) {
+      const avatar = document.getElementById('avatarDisplay');
+      avatar.style.backgroundImage = `url('${PROFILE_IMAGE_URL}')`;
+      avatar.innerHTML = '';
+    }
+
+    // Dynamic QR Code Generators
+    window.addEventListener('DOMContentLoaded', () => {
+      new QRCode(document.getElementById("telegramQr"), {
+        text: "https://t.me/LYHeng_PandaSend",
+        width: 70,
+        height: 70,
+        colorDark : "#d70f64",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+      });
+
+      new QRCode(document.getElementById("referralQr"), {
+        text: "https://forms.gle/uGdBPgNdeZuHURYC6",
+        width: 70,
+        height: 70,
+        colorDark : "#1f1d20",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+      });
+    });
+
+// ==========================================================================
+    // ELEGANT CONSTELLATION NETWORK CANVAS BACKGROUND (ORIGINAL)
+    // ==========================================================================
+    const canvas = document.getElementById('liveBgCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let mouse = { x: null, y: null, maxRadius: 180 };
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mouseleave', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    class NetworkNode {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.radius = Math.random() * 2 + 1.5;
+        this.vx = (Math.random() - 0.5) * 0.6;
+        this.vy = (Math.random() - 0.5) * 0.6;
+        this.baseAlpha = Math.random() * 0.5 + 0.3;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(215, 15, 100, ${this.baseAlpha})`;
+        ctx.fill();
+      }
+    }
+
+    const nodeCount = Math.min(Math.floor((window.innerWidth * window.innerHeight) / 18000), 65);
+    const nodes = Array.from({ length: nodeCount }, () => new NetworkNode());
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Connect nodes within distance threshold
+      const maxDistance = 140;
+      for (let i = 0; i < nodes.length; i++) {
+        nodes[i].update();
+        nodes[i].draw();
+
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < maxDistance) {
+            const alpha = (1 - dist / maxDistance) * 0.25;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(215, 15, 100, ${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+
+        // Mouse reactive connection
+        if (mouse.x !== null && mouse.y !== null) {
+          const dx = nodes[i].x - mouse.x;
+          const dy = nodes[i].y - mouse.y;
+          const mouseDist = Math.sqrt(dx * dx + dy * dy);
+
+          if (mouseDist < mouse.maxRadius) {
+            const alpha = (1 - mouseDist / mouse.maxRadius) * 0.4;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.strokeStyle = `rgba(180, 0, 80, ${alpha})`;
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>
