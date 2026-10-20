@@ -768,7 +768,7 @@
   <!-- Javascript Functionality -->
   <script>
     // PROFILE IMAGE CONFIGURATION
-    const PROFILE_IMAGE_URL = 'github/Heng LY.PNG';
+    const PROFILE_IMAGE_URL = 'github/Profile1.jpeg';
     if (PROFILE_IMAGE_URL) {
       const avatar = document.getElementById('avatarDisplay');
       avatar.style.backgroundImage = `url('${PROFILE_IMAGE_URL}')`;
