@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LY HENG | foodpanda Portfolio ID</title>
+  <title>KHUN SOVANNARAT | foodpanda Portfolio ID</title>
   <!-- Google Fonts & FontAwesome Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -634,7 +634,7 @@
             </div>
 
             <div class="profile-info">
-              <h1 class="user-name">LY HENG</h1>
+              <h1 class="user-name">KHUN SOVANNARAT</h1>
               <div class="user-position">
                 Specialist, Sale & Account Management
               </div>
@@ -676,11 +676,11 @@
               <div class="contact-details-list">
                 <div class="contact-item">
                   <i class="fa-solid fa-phone"></i>
-                  <a href="tel:+85515777313">(+855) 15 777 313</a>
+                  <a href="tel:+85577444279">(+855) 77 444 279</a>
                 </div>
                 <div class="contact-item">
                   <i class="fa-solid fa-envelope"></i>
-                  <a href="mailto:heng.ly@foodpanda.com.kh">heng.ly@foodpanda.com.kh</a>
+                  <a href="mailto:sovannarat.khun.ext@foodpanda.com.kh">sovannarat.khun.ext@foodpanda.com.kh</a>
                 </div>
                 <div class="contact-item">
                   <i class="fa-solid fa-globe"></i>
@@ -695,13 +695,13 @@
 
             <!-- Social & Quick Direct Action Links -->
             <div class="social-links">
-              <a href="https://t.me/LYHeng_PandaSend" target="_blank" class="social-icon" title="Telegram Contact">
+              <a href="https://t.me/Roth17" target="_blank" class="social-icon" title="Telegram Contact">
                 <i class="fa-brands fa-telegram"></i>
               </a>
-              <a href="mailto:heng.ly@foodpanda.com.kh" class="social-icon" title="Send Email">
+              <a href="mailto:sovannarat.khun.ext@foodpanda.com.kh" class="social-icon" title="Send Email">
                 <i class="fa-solid fa-envelope"></i>
               </a>
-              <a href="tel:+85515777313" class="social-icon" title="Call Phone">
+              <a href="tel:+85577444279" class="social-icon" title="Call Phone">
                 <i class="fa-solid fa-phone"></i>
               </a>
               <a href="https://pandasend-kh.com/" target="_blank" class="social-icon" title="Visit Website">
@@ -735,7 +735,7 @@
               <i class="fa-brands fa-telegram" style="color: #0088cc;"></i> Telegram
             </div>
             <div class="qr-tile-desc">Direct chat & PandaSend inquiries</div>
-            <a href="https://t.me/LYHeng_PandaSend" target="_blank" class="qr-action-btn">
+            <a href="https://t.me/Roth17" target="_blank" class="qr-action-btn">
               Chat Now <i class="fa-solid fa-arrow-right"></i>
             </a>
           </div>
@@ -778,7 +778,7 @@
     // Dynamic QR Code Generators
     window.addEventListener('DOMContentLoaded', () => {
       new QRCode(document.getElementById("telegramQr"), {
-        text: "https://t.me/LYHeng_PandaSend",
+        text: "https://t.me/Roth17",
         width: 70,
         height: 70,
         colorDark : "#d70f64",
